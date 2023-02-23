@@ -1,0 +1,14 @@
+#!/usr/bin/fish
+
+set ARCHIVE $argv[1]
+set ARCHIVE_BASENAME (basename $ARCHIVE)
+
+set MOUNT_ROOT "$XDG_RUNTIME_DIR/archive-mount"
+set MOUNT_DIR "$MOUNT_ROOT/$ARCHIVE_BASENAME"
+
+mkdir -p $MOUNT_DIR
+fuse-archive $ARCHIVE $MOUNT_DIR
+set error $status
+if test $error -ne 0; return $error; end
+
+echo $MOUNT_DIR
